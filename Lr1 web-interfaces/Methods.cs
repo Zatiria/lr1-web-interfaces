@@ -8,13 +8,20 @@ namespace Lr1_web_interfaces
 {
     internal class Methods
     {
+        private String text = new StreamReader("Lorem Ipsum.txt").ReadToEnd();
+
         public void GetWords()
         {
             Console.Write("Введіть кількість слів: ");
-            int count = Convert.ToInt32(Console.ReadLine());
+            string input = Console.ReadLine();
 
-            using StreamReader reader = new("Lorem Ipsum.txt");
-            String text = reader.ReadToEnd();
+            int count;
+            if (!int.TryParse(input, out count))
+            {
+                Console.WriteLine("Помилка: Введено некоректне число.");
+                return;
+            }
+
             String[] words = text.Split(' ');
             if (count > words.Length)
             {
@@ -26,31 +33,49 @@ namespace Lr1_web_interfaces
         public void Calculate()
         {
             Console.Write("Введіть перше число: ");
-            double a = Convert.ToDouble(Console.ReadLine());
+            string input = Console.ReadLine();
+            double a;
+            if (!double.TryParse(input, out a))
+            {
+                Console.WriteLine("Помилка: Введено некоректне число.");
+                return;
+            }
             Console.Write("Введіть друге число: ");
-            double b = Convert.ToDouble(Console.ReadLine());
+            input = Console.ReadLine();
+            double b;
+            if (!double.TryParse(input, out b))
+            {
+                Console.WriteLine("Помилка: Введено некоректне число.");
+                return;
+            }
             Console.Write("Введіть операцію (+, -, *, /): ");
             String operation = Console.ReadLine();
-            String res = "";
+            double result;
             switch (operation)
             {
                 case "+":
-                    res = (a + b).ToString();
+                    result = a + b;
                     break;
                 case "-":
-                    res = (a - b).ToString();
+                    result = a - b;
                     break;
                 case "*":
-                    res = (a * b).ToString();
+                    result = a * b;
                     break;
                 case "/":
-                    res = (a / b).ToString();
+                    if (b == 0)
+                    {
+                        Console.WriteLine("Помилка: Ділення на нуль неможливе.");
+                        return;
+                    }
+                    result = a / b;
                     break;
                 default:
-                    res =  "Невірна операція";
-                    break;
+                    Console.WriteLine("Помилка: Невірна операція.");
+                    return;
             }
-            Console.WriteLine("Результат: " + res);
+
+            Console.WriteLine("Результат: " + result);
         }
     }
 }
